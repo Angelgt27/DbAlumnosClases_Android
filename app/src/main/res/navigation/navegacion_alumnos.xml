@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navegacion_alumnos"
+    app:startDestination="@id/fragmentListadoAlumnos">
+
+    <fragment
+        android:id="@+id/fragmentListadoAlumnos"
+        android:name="com.example.ejroom.FragmentListadoAlumnos"
+        android:label="fragment_listado_alumnos"
+        tools:layout="@layout/fragment_listado_alumnos" />
+    <fragment
+        android:id="@+id/fragmentNuevoAlumno"
+        android:name="com.example.ejroom.FragmentNuevoAlumno"
+        android:label="fragment_nuevo_alumno"
+        tools:layout="@layout/fragment_nuevo_alumno" />
+</navigation>

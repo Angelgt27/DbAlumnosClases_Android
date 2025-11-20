@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".FragmentNuevoAlumno">
+    <EditText
+        android:id="@+id/texto_nombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/introduce_tu_nombre"
+        android:inputType="textMultiLine" />
+    <EditText
+        android:id="@+id/texto_nota"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/introduce_tu_nota"
+        android:inputType="numberDecimal" />
+    <Button
+        android:id="@+id/boton_guardar"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/guardar" />
+    <Button
+        android:id="@+id/boton_cancelar"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cancelar" />
+</LinearLayout>
