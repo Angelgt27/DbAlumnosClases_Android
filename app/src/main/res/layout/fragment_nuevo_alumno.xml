@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".FragmentNuevoAlumno">
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selecciona Clase:"
+        android:textSize="16sp" />
+
+    <Spinner
+        android:id="@+id/spinner_clases"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:layout_marginBottom="16dp"/>
+
     <EditText
         android:id="@+id/texto_nombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/introduce_tu_nombre"
-        android:inputType="textMultiLine" />
+        android:hint="Nombre del alumno" />
+
     <EditText
         android:id="@+id/texto_nota"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/introduce_tu_nota"
+        android:hint="Nota"
         android:inputType="numberDecimal" />
+
     <Button
         android:id="@+id/boton_guardar"
-        style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/guardar" />
-    <Button
-        android:id="@+id/boton_cancelar"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/cancelar" />
+        android:text="Guardar" />
 </LinearLayout>

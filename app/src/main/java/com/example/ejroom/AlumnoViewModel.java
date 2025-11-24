@@ -22,8 +22,8 @@ public class AlumnoViewModel extends AndroidViewModel {
 
     public void insertarAlumno(Alumno a) { repositorio.insertarAlumno(a); }
 
-    void eliminar(Alumno a){repositorio.eliminarAlumno(a);}
-    void actualizar(Alumno elemento, String nombre, float nota){
+    void eliminarAlumno(Alumno a){repositorio.eliminarAlumno(a);}
+    void actualizarAlumno(Alumno elemento, String nombre, float nota){
         repositorio.actualizarAlumno(elemento, nombre, nota);
     }
     public LiveData<List<Clase>> obtenerClases() { return repositorio.obtenerClases(); }

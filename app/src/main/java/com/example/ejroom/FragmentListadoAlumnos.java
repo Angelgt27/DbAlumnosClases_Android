@@ -1,33 +1,34 @@
 package com.example.ejroom;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
 
 public class FragmentListadoAlumnos extends Fragment {
-
-    private AlumnoViewModel alumnoViewModel;
+    private AlumnoViewModel viewModel;
     private AlumnosAdapter adapter;
+    private int claseId;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            claseId = getArguments().getInt("claseId");
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_listado_alumnos, container, false);
     }
 
@@ -35,57 +36,29 @@ public class FragmentListadoAlumnos extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        viewModel = new ViewModelProvider(this).get(AlumnoViewModel.class);
 
-        // Inicializamos el adapter con la lógica para Modificar y Borrar
+        RecyclerView rv = view.findViewById(R.id.recyclerView);
+        rv.setLayoutManager(new LinearLayoutManager(getContext()));
+
         adapter = new AlumnosAdapter(new ArrayList<>(),
-                (alumno, nuevoNombre, nuevaNota) -> {
-                    // Lógica al pulsar MODIFICAR
-                    alumnoViewModel.actualizar(alumno, nuevoNombre, nuevaNota);
+                (alumno, nom, nota) -> {
+                    alumno.setNombre(nom);
+                    alumno.setNota(nota);
+                    viewModel.actualizarAlumno(alumno,nom,nota);
                 },
-                (alumno, x, y) -> {
-                    // Lógica al pulsar BORRAR
-                    showDeleteConfirmationDialog(getContext(), alumno);
-                    //alumnoViewModel.eliminar(alumno);
-                }
-        );
+                (alumno, x, y) -> viewModel.eliminarAlumno(alumno));
 
-        recyclerView.setAdapter(adapter);
+        rv.setAdapter(adapter);
 
-        alumnoViewModel = new ViewModelProvider(this).get(AlumnoViewModel.class);
-
-        alumnoViewModel.obtener().observe(getViewLifecycleOwner(), alumnos -> {
-            adapter.setAlumnos(alumnos);
-        });
+        // Observamos SOLO los alumnos de esta clase
+        viewModel.obtenerAlumnos(claseId).observe(getViewLifecycleOwner(), alumnos -> adapter.setAlumnos(alumnos));
 
         FloatingActionButton fab = view.findViewById(R.id.irANuevoAlumno);
         fab.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(view);
-            navController.navigate(R.id.fragmentNuevoAlumno);
+            Bundle bundle = new Bundle();
+            bundle.putInt("claseId", claseId); // Pasamos el ID para preseleccionar
+            Navigation.findNavController(view).navigate(R.id.action_alumnos_to_nuevoAlumno, bundle);
         });
-    }
-
-    private void showDeleteConfirmationDialog(Context context, Alumno a) {
-        new AlertDialog.Builder(context)
-                // Título del diálogo
-                .setTitle("Confirmar Borrado")
-                // Pregunta de comprobación
-                .setMessage("¿Está seguro de borrar este alumno: \"" +
-                        a.getNombre() + "\"? Esta acción es irreversible.")
-                // Botón de confirmación (Positivo)
-                .setPositiveButton("Sí, Borrar", (dialog, which) -> {
-                    // Si el usuario hace clic en "Sí, Borrar",ejecutamos la acción
-                    alumnoViewModel.eliminar(a);
-                    Toast.makeText(context, "Alumno '" + a.getNombre() +
-                            "' eliminado.", Toast.LENGTH_SHORT).show();
-                })
-                // Botón de cancelación (Negativo)
-                .setNegativeButton("Cancelar", (dialog, which) -> {
-                    // Si el usuario hace clic en "Cancelar", simplemente se cierra el diálogo
-                    dialog.dismiss();
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert) // Icono de alerta
-                .show();
     }
 }

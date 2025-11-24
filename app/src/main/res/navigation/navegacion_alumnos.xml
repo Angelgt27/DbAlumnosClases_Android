@@ -3,16 +3,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navegacion_alumnos"
-    app:startDestination="@id/fragmentListadoAlumnos">
+    app:startDestination="@id/fragmentListadoClases">
+
+    <fragment
+        android:id="@+id/fragmentListadoClases"
+        android:name="com.example.ejroom.FragmentListadoClases"
+        tools:layout="@layout/fragment_listado_alumnos">
+        <action
+            android:id="@+id/action_clases_to_alumnos"
+            app:destination="@id/fragmentListadoAlumnos" />
+        <action
+            android:id="@+id/action_clases_to_nuevaClase"
+            app:destination="@id/fragmentNuevaClase" />
+    </fragment>
 
     <fragment
         android:id="@+id/fragmentListadoAlumnos"
         android:name="com.example.ejroom.FragmentListadoAlumnos"
-        android:label="fragment_listado_alumnos"
-        tools:layout="@layout/fragment_listado_alumnos" />
+        tools:layout="@layout/fragment_listado_alumnos">
+        <argument
+            android:name="claseId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_alumnos_to_nuevoAlumno"
+            app:destination="@id/fragmentNuevoAlumno" />
+    </fragment>
+
     <fragment
         android:id="@+id/fragmentNuevoAlumno"
         android:name="com.example.ejroom.FragmentNuevoAlumno"
-        android:label="fragment_nuevo_alumno"
-        tools:layout="@layout/fragment_nuevo_alumno" />
+        tools:layout="@layout/fragment_nuevo_alumno">
+        <argument
+            android:name="claseId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentNuevaClase"
+        android:name="com.example.ejroom.FragmentNuevaClase"
+        tools:layout="@layout/fragment_nueva_clase" />
 </navigation>
