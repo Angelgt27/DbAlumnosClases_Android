@@ -9,27 +9,25 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class AlumnoViewModel extends AndroidViewModel {
-    AlumnosRepositorio alumnosRepositorio;
+    AlumnosRepositorio repositorio;
+
     public AlumnoViewModel(@NonNull Application application) {
         super(application);
-//Inicializo la lista de alumnos
-// se le debe pasar la referencia de la aplicación cuando se intancia el listado
-                alumnosRepositorio = new AlumnosRepositorio(application);
+        repositorio = new AlumnosRepositorio(application);
     }
-    public LiveData<List<Alumno>> obtener()
-    {
-        return alumnosRepositorio.obtener();
+
+    public LiveData<List<Alumno>> obtenerAlumnos(int claseId) {
+        return repositorio.obtenerAlumnosPorClase(claseId);
     }
-    void insertar(Alumno a){
-//llama al metodo insertar del modelo y ademas al tener el interfac callback
-//necestita que implementemos los metodos de dicho interfaz en este caso notificarcambios
-        alumnosRepositorio.insertar(a);
-    }
-    void eliminar(Alumno a){
-        alumnosRepositorio.eliminar(a);
-    }
+
+    public void insertarAlumno(Alumno a) { repositorio.insertarAlumno(a); }
+
+    void eliminar(Alumno a){repositorio.eliminarAlumno(a);}
     void actualizar(Alumno elemento, String nombre, float nota){
-        alumnosRepositorio.actualizar(elemento, nombre, nota);
+        repositorio.actualizarAlumno(elemento, nombre, nota);
     }
+    public LiveData<List<Clase>> obtenerClases() { return repositorio.obtenerClases(); }
+    public void insertarClase(Clase c) { repositorio.insertarClase(c); }
 }
+
 

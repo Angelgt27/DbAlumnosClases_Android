@@ -1,35 +1,30 @@
 package com.example.ejroom;
 
-
 import android.app.Application;
-
 import androidx.lifecycle.LiveData;
-
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class AlumnosRepositorio {
-    //List<Alumno> elementos = new ArrayList<>();
     AlumnoDao alumnoDao;
-    //Las operacions update, insert, delete se deben hacer en segundo plano, por ello creamos un objeto EXECUTOR
+    ClaseDao claseDao; // Nuevo
     Executor executor = Executors.newSingleThreadExecutor();
-    public AlumnosRepositorio(Application application)
-    {
-        alumnoDao = AlumnoDataBase.obtenerInstancia(application).getAlumnoDao();
+
+    public AlumnosRepositorio(Application application) {
+        AlumnoDataBase db = AlumnoDataBase.obtenerInstancia(application);
+        alumnoDao = db.getAlumnoDao();
+        claseDao = db.getClaseDao();
     }
+
     public AlumnosRepositorio(){
     }
-    public LiveData<List<Alumno>> obtener() {
-        return alumnoDao.getAlumnos();
+
+    public LiveData<List<Alumno>> obtenerAlumnosPorClase(int claseId) {
+        return alumnoDao.getAlumnosPorClase(claseId);
     }
-    /*
-    Debido a que estos cambios sobre los datos se reflejarán
-    automáticamente en el LiveData de la consulta SELECT,
-    ya no es necesario el callback para retornar la lista resultante.
-    En la clase ViewModel tambien elimino los CallBacks
-    */
-    void insertar(Alumno alumno){
+
+    void insertarAlumno(Alumno alumno){
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -37,7 +32,7 @@ public class AlumnosRepositorio {
             }
         });
     }
-    void eliminar(Alumno alumno) {
+    void eliminarAlumno(Alumno alumno) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -45,7 +40,7 @@ public class AlumnosRepositorio {
             }
         });
     }
-    public void actualizar(Alumno a, String nombre, float nota) {
+    public void actualizarAlumno(Alumno a, String nombre, float nota) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -54,5 +49,13 @@ public class AlumnosRepositorio {
                 alumnoDao.updateAlumno(a);
             }
         });
+    }
+
+    public LiveData<List<Clase>> obtenerClases() {
+        return claseDao.obtenerClases();
+    }
+
+    public void insertarClase(Clase clase) {
+        executor.execute(() -> claseDao.insertarClase(clase));
     }
 }
