@@ -47,7 +47,10 @@ public class FragmentListadoAlumnos extends Fragment {
                     alumno.setNota(nota);
                     viewModel.actualizarAlumno(alumno,nom,nota);
                 },
-                (alumno, x, y) -> viewModel.eliminarAlumno(alumno));
+                (alumno, x, y) -> {
+                    showDeleteConfirmationDialog(getContext(), alumno);
+                }
+        );
 
         rv.setAdapter(adapter);
 
@@ -60,5 +63,26 @@ public class FragmentListadoAlumnos extends Fragment {
             bundle.putInt("claseId", claseId); // Pasamos el ID para preseleccionar
             Navigation.findNavController(view).navigate(R.id.action_alumnos_to_nuevoAlumno, bundle);
         });
+    }
+
+    private void showDeleteConfirmationDialog(android.content.Context context, Alumno a) {
+        new androidx.appcompat.app.AlertDialog.Builder(context)
+                // Título del diálogo
+                .setTitle("Confirmar Borrado")
+                // Pregunta de comprobación
+                .setMessage("¿Está seguro de borrar este alumno: \"" + a.getNombre() + "\"? Esta acción es irreversible.")
+                // Botón de confirmación (Positivo)
+                .setPositiveButton("Sí, Borrar", (dialog, which) -> {
+                    // Si el usuario hace clic en "Sí, Borrar", ejecutamos la acción
+                    viewModel.eliminarAlumno(a);
+                    android.widget.Toast.makeText(context, "Alumno '" + a.getNombre() + "' eliminado.", android.widget.Toast.LENGTH_SHORT).show();
+                })
+                // Botón de cancelación (Negativo)
+                .setNegativeButton("Cancelar", (dialog, which) -> {
+                    // Si el usuario hace clic en "Cancelar", simplemente se cierra el diálogo
+                    dialog.dismiss();
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert) // Icono de alerta
+                .show();
     }
 }
