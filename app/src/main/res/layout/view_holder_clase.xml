@@ -2,14 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="?android:attr/selectableItemBackground">
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:gravity="center_vertical"
+    android:background="@android:color/white">
 
-    <TextView
-        android:id="@+id/txtNombreClase"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/etNombreClase"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_weight="1"
+        android:inputType="textCapSentences"
+        android:hint="Nombre Clase" />
+
+    <Button
+        android:id="@+id/btnModificarClase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Modificar"
+        android:textSize="12sp"
+        style="?android:attr/buttonBarButtonStyle" />
+
+    <Button
+        android:id="@+id/btnBorrarClase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Eliminar"
+        android:textSize="12sp"
+        android:textColor="@android:color/holo_red_dark"
+        style="?android:attr/buttonBarButtonStyle" />
+
+    <Button
+        android:id="@+id/btnEntrarClase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ver alumnos"
+        android:textSize="12sp"
+        style="?android:attr/buttonBarButtonStyle" />
+
 </LinearLayout>

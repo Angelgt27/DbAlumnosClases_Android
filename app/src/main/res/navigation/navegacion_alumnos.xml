@@ -9,12 +9,17 @@
         android:id="@+id/fragmentListadoClases"
         android:name="com.example.ejroom.FragmentListadoClases"
         tools:layout="@layout/fragment_listado_alumnos">
+
         <action
             android:id="@+id/action_clases_to_alumnos"
             app:destination="@id/fragmentListadoAlumnos" />
         <action
             android:id="@+id/action_clases_to_nuevaClase"
             app:destination="@id/fragmentNuevaClase" />
+
+        <action
+            android:id="@+id/action_clases_to_nuevoAlumno"
+            app:destination="@id/fragmentNuevoAlumno" />
     </fragment>
 
     <fragment

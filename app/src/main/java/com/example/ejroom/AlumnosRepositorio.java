@@ -58,4 +58,12 @@ public class AlumnosRepositorio {
     public void insertarClase(Clase clase) {
         executor.execute(() -> claseDao.insertarClase(clase));
     }
+
+    public void eliminarClase(Clase clase) {
+        executor.execute(() -> claseDao.borrar(clase));
+    }
+
+    public void actualizarClase(Clase clase) {
+        executor.execute(() -> claseDao.actualizar(clase));
+    }
 }

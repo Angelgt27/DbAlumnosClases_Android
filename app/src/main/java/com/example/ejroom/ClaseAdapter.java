@@ -3,20 +3,25 @@ package com.example.ejroom;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class ClaseAdapter extends RecyclerView.Adapter<ClaseAdapter.ClaseViewHolder> {
     private List<Clase> lista;
-    private final OnItemClickListener listener;
+    private final OnClaseActionListener listener;
 
-    public interface OnItemClickListener {
-        void onItemClick(Clase clase);
+    // Interfaz para gestionar las 3 acciones
+    public interface OnClaseActionListener {
+        void onNavegar(Clase clase); // Click en "play" para entrar
+        void onModificar(Clase clase, String nuevoNombre); // Click en "Modif"
+        void onBorrar(Clase clase); // Click en "X"
     }
 
-    public ClaseAdapter(List<Clase> lista, OnItemClickListener listener) {
+    public ClaseAdapter(List<Clase> lista, OnClaseActionListener listener) {
         this.lista = lista;
         this.listener = listener;
     }
@@ -31,8 +36,18 @@ public class ClaseAdapter extends RecyclerView.Adapter<ClaseAdapter.ClaseViewHol
     @Override
     public void onBindViewHolder(@NonNull ClaseViewHolder holder, int position) {
         Clase c = lista.get(position);
-        holder.txtNombre.setText(c.nombre);
-        holder.itemView.setOnClickListener(v -> listener.onItemClick(c));
+        holder.etNombre.setText(c.nombre);
+
+        // 1. Botón Entrar (Navegar)
+        holder.btnEntrar.setOnClickListener(v -> listener.onNavegar(c));
+
+        // 2. Botón Modificar
+        holder.btnModificar.setOnClickListener(v -> {
+            listener.onModificar(c, holder.etNombre.getText().toString());
+        });
+
+        // 3. Botón Borrar
+        holder.btnBorrar.setOnClickListener(v -> listener.onBorrar(c));
     }
 
     @Override
@@ -44,10 +59,16 @@ public class ClaseAdapter extends RecyclerView.Adapter<ClaseAdapter.ClaseViewHol
     }
 
     static class ClaseViewHolder extends RecyclerView.ViewHolder {
-        TextView txtNombre;
+        EditText etNombre;
+        Button btnModificar, btnBorrar;
+        Button btnEntrar;
+
         public ClaseViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtNombre = itemView.findViewById(R.id.txtNombreClase);
+            etNombre = itemView.findViewById(R.id.etNombreClase);
+            btnModificar = itemView.findViewById(R.id.btnModificarClase);
+            btnBorrar = itemView.findViewById(R.id.btnBorrarClase);
+            btnEntrar = itemView.findViewById(R.id.btnEntrarClase);
         }
     }
 }
