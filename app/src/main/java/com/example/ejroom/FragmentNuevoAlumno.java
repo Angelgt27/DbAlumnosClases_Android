@@ -24,6 +24,7 @@ public class FragmentNuevoAlumno extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Recibe el ID de la clase si viene desde el listado específico (FragmentListadoAlumnos)
         if (getArguments() != null) {
             clasePreseleccionadaId = getArguments().getInt("claseId", -1);
         }
@@ -31,6 +32,7 @@ public class FragmentNuevoAlumno extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Asegúrate de que este layout incluye el Spinner (como lo hemos modificado previamente)
         return inflater.inflate(R.layout.fragment_nuevo_alumno, container, false);
     }
 
@@ -44,12 +46,14 @@ public class FragmentNuevoAlumno extends Fragment {
         EditText etNota = view.findViewById(R.id.texto_nota);
         Button btnGuardar = view.findViewById(R.id.boton_guardar);
 
-        // Llenar Spinner
+
+
+        // Llenar Spinner con las clases disponibles
         viewModel.obtenerClases().observe(getViewLifecycleOwner(), clases -> {
             ArrayAdapter<Clase> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, clases);
             spinner.setAdapter(adapter);
 
-            // Si venimos de una clase concreta, la seleccionamos
+            // Si venimos de una clase concreta, la seleccionamos y bloqueamos
             if (clasePreseleccionadaId != -1) {
                 for (int i = 0; i < clases.size(); i++) {
                     if (clases.get(i).getId() == clasePreseleccionadaId) {
@@ -57,6 +61,11 @@ public class FragmentNuevoAlumno extends Fragment {
                         break;
                     }
                 }
+                // BLOQUEAR EL SPINNER para que el usuario no pueda cambiar la clase
+                spinner.setEnabled(false);
+            } else {
+                // Si venimos de la pantalla principal (FAB de elección), el spinner estará habilitado.
+                spinner.setEnabled(true);
             }
         });
 
@@ -66,11 +75,14 @@ public class FragmentNuevoAlumno extends Fragment {
             Clase claseSeleccionada = (Clase) spinner.getSelectedItem();
 
             if (!nombre.isEmpty() && !notaStr.isEmpty() && claseSeleccionada != null) {
+                // Si el spinner está bloqueado, usamos la clase preseleccionada.
+                // Si está desbloqueado, usamos la que el usuario haya seleccionado.
                 viewModel.insertarAlumno(new Alumno(nombre, Float.parseFloat(notaStr), claseSeleccionada.getId()));
                 Navigation.findNavController(view).popBackStack();
             } else {
                 Toast.makeText(getContext(), "Faltan datos o no hay clases", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 }
